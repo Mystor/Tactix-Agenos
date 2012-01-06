@@ -1,0 +1,16 @@
+<tilelist ids="256">
+	<tile id="1">
+		<name>Grass</name>
+		<tileimg src="tile_grass.png" originx="0" originy="0"/>
+		<mainvert src="vertical_grass_main.png" originx="0" originy="0"/>
+		<topvert src="vertical_grass_top.png" originx="0" originy="0"/>
+		<blocked>false</blocked>
+	</tile>
+	<tile id="2">
+		<name>Dirt</name>
+		<tileimg src="tile_dirt.png" originx="0" originy="0"/>
+		<mainvert src="vertical_grass_main.png" originx="0" originy="0"/>
+		<topvert src="vertical_grass_main.png" originx="0" originy="0"/>
+		<blocked>false</blocked>
+	</tile>
+</tilelist>
