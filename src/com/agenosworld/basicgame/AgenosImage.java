@@ -5,6 +5,7 @@ package com.agenosworld.basicgame;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.xml.sax.Attributes;
 
 /**
  * @author Michael
@@ -34,11 +35,55 @@ public class AgenosImage extends SpriteSheet implements Updatable {
 		this.frameCount = frameCount;
 		
 		frameDelta = 1000/frameRate;
+		
+		System.out.println(this.getHorizontalCount());
 	}
 	
 	public AgenosImage(String ref, int xOffset, int yOffset) throws SlickException {
 		super(ref, 1, 1);
 		animated = false;
+	}
+	
+	public static AgenosImage fromImageDef(Attributes attributes, String imgRes) throws SlickException {
+		boolean anim;
+		try {
+			anim = (Boolean.parseBoolean(attributes.getValue("animated")));
+		} catch (NullPointerException e) {
+			anim = false;
+		}
+		
+		int tw = 0, th = 0, frameRate = 0, frameCount = 0;
+		
+		if (anim) {
+			try {
+				tw = Integer.parseInt(attributes.getValue("tw"));
+				th = Integer.parseInt(attributes.getValue("th"));
+				
+				frameRate = Integer.parseInt(attributes.getValue("frameRate"));
+				frameCount = Integer.parseInt(attributes.getValue("frameCnt"));
+			} catch (NumberFormatException e) {
+				anim = false;
+			}
+		}
+		
+		int xOffset = 0, yOffset = 0;
+		
+		String ref = imgRes + "/" + attributes.getValue("src");
+		try {
+			xOffset = Integer.parseInt(attributes.getValue("xOffset"));
+			yOffset = Integer.parseInt(attributes.getValue("yOffset"));
+		} catch (NumberFormatException e) {
+			throw new SlickException(e.getMessage());
+		}
+		
+		if (anim)
+			return new AgenosImage(ref, xOffset, yOffset, tw, th, frameRate, frameCount);
+		
+		return new AgenosImage(ref, xOffset, yOffset);
+	}
+	
+	public boolean isAnimated() {
+		return animated;
 	}
 	
 	public void update(int delta) {
@@ -52,6 +97,8 @@ public class AgenosImage extends SpriteSheet implements Updatable {
 			if (currFrame >=frameCount)
 				currFrame = 0;
 		}
+		
+		System.out.println("asd");
 	}
 	
 	public void render(int x, int y) {

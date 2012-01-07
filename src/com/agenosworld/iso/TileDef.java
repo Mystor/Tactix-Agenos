@@ -5,6 +5,8 @@ package com.agenosworld.iso;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import com.agenosworld.basicgame.AgenosImage;
+import com.agenosworld.basicgame.Updater;
 
 /**
  * @author Michael
@@ -20,44 +22,36 @@ public class TileDef {
 	
 	public boolean ready = false;
 	
-	public Image tile;
-	public Image mainVert;
-	public Image topVert;
+	public AgenosImage tile;
+	public AgenosImage mainVert;
+	public AgenosImage topVert;
 	public boolean blocked;
 	
 	//Current rendered Y position of the top of the tile
 	public int currY;
 	
-	private String imgSrc;
 	private int id;
 	
-	public TileDef(int id, String imgSrc) {
-		this.imgSrc = imgSrc;
+	public TileDef(int id) {
 		this.id = id;
 	}
 	
-	public void setTileImg(String res) {
-		try {
-			tile = new Image(imgSrc+"/"+res);
-		} catch (SlickException e) {
-			System.out.println("ERROR: Unable to load image for tile ID: "+id);
-		}
+	public void setTileImg(AgenosImage img) {
+		tile = img;
+		if (img.isAnimated())
+			Updater.addUpdatable(img);
 		checkRdy();
 	}
-	public void setMainVert(String res) {
-		try {	
-			mainVert = new Image(imgSrc+"/"+res);
-		} catch (SlickException e) {
-			System.out.println("ERROR: Unable to load image for tile ID: "+id);
-		}
+	public void setMainVert(AgenosImage img) {
+		mainVert = img;
+		if (img.isAnimated())
+			Updater.addUpdatable(img);
 		checkRdy();
 	}
-	public void setTopVert(String res) {
-		try {	
-			topVert = new Image(imgSrc+"/"+res);
-		} catch (SlickException e) {
-			System.out.println("ERROR: Unable to load image for tile ID: "+id);
-		}
+	public void setTopVert(AgenosImage img) {
+		topVert = img;
+		if (img.isAnimated())
+			Updater.addUpdatable(img);
 		checkRdy();
 	}
 	public void setBlocked(boolean blocked) {
@@ -94,7 +88,7 @@ public class TileDef {
 			currY -= TileDef.VERTICAL_DELTA;
 		}
 		
-		tile.draw(x, currY);
+		tile.render(x, currY);
 	}
 	
 	private void checkRdy() {

@@ -57,6 +57,8 @@ public class TactixAgenos extends BasicGame implements GameBasics {
 		
 		if (isoMap != null)
 			isoMap.update(delta);
+		
+		Updater.update(delta);
 
 	}
 	

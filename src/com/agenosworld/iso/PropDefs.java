@@ -66,7 +66,7 @@ public class PropDefs extends DefaultHandler {
 			tiles = new TileDef[PropDefs.TILE_IDS];
 		}
 
-		if ("TILE".equalsIgnoreCase(qName)) {
+		/*if ("TILE".equalsIgnoreCase(qName)) {
 			int id = Integer.parseInt(attributes.getValue("id"));
 			currTile = id-1;
 			tiles[id-1] = new TileDef(id, imgRes);
@@ -82,7 +82,7 @@ public class PropDefs extends DefaultHandler {
 		
 		if ("TOPVERT".equalsIgnoreCase(qName)) {
 			tiles[currTile].setTopVert(attributes.getValue("src"));
-		}
+		}*/
 		
 		/*if ("".equals (uri))
 		    System.out.println("Start element: " + qName);

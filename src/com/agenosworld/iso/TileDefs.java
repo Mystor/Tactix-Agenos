@@ -11,6 +11,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.*;
 import org.newdawn.slick.SlickException;
 
+import com.agenosworld.basicgame.AgenosImage;
+
 /**
  * @author Michael
  *
@@ -69,19 +71,31 @@ public class TileDefs extends DefaultHandler {
 		if ("TILE".equalsIgnoreCase(qName)) {
 			int id = Integer.parseInt(attributes.getValue("id"));
 			currTile = id-1;
-			tiles[id-1] = new TileDef(id, imgRes);
+			tiles[id-1] = new TileDef(id);
 		}
 		
 		if ("TILEIMG".equalsIgnoreCase(qName)) {
-			tiles[currTile].setTileImg(attributes.getValue("src"));
+			try {
+				tiles[currTile].setTileImg(AgenosImage.fromImageDef(attributes, imgRes));
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if ("MAINVERT".equalsIgnoreCase(qName)) {
-			tiles[currTile].setMainVert(attributes.getValue("src"));
+			try {
+				tiles[currTile].setMainVert(AgenosImage.fromImageDef(attributes, imgRes));
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if ("TOPVERT".equalsIgnoreCase(qName)) {
-			tiles[currTile].setTopVert(attributes.getValue("src"));
+			try {
+				tiles[currTile].setTopVert(AgenosImage.fromImageDef(attributes, imgRes));
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		/*if ("".equals (uri))
