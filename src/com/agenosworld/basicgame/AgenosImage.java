@@ -20,6 +20,9 @@ public class AgenosImage extends SpriteSheet implements Updatable {
 	private int frameCount;
 	
 	private boolean animated;
+	
+	private int xOffset;
+	private int yOffset;
 
 	/**
 	 * @param ref
@@ -36,12 +39,15 @@ public class AgenosImage extends SpriteSheet implements Updatable {
 		
 		frameDelta = 1000/frameRate;
 		
-		System.out.println(this.getHorizontalCount());
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 	}
 	
 	public AgenosImage(String ref, int xOffset, int yOffset) throws SlickException {
 		super(ref, 1, 1);
 		animated = false;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 	}
 	
 	public static AgenosImage fromImageDef(Attributes attributes, String imgRes) throws SlickException {
@@ -94,11 +100,12 @@ public class AgenosImage extends SpriteSheet implements Updatable {
 		if (currDelta >= frameDelta) {
 			this.currFrame++;
 			
-			if (currFrame >=frameCount)
+			if (currFrame >=frameCount) {	
 				currFrame = 0;
+			}
+			
+			currDelta-=frameDelta;
 		}
-		
-		System.out.println("asd");
 	}
 	
 	public void render(int x, int y) {
@@ -115,7 +122,7 @@ public class AgenosImage extends SpriteSheet implements Updatable {
 			frameX -= getHorizontalCount();
 		}
 		
-		getSprite(frameX, frameY).draw(x, y);
+		getSprite(frameX, frameY).draw(x-xOffset, y-yOffset);
 		
 	}
 

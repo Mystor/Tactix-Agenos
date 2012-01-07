@@ -11,27 +11,29 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.*;
 import org.newdawn.slick.SlickException;
 
+import com.agenosworld.basicgame.AgenosImage;
+
 /**
  * @author Michael
  *
  */
 public class PropDefs extends DefaultHandler {
 	
-	//Static value representing the total number of TILE IDs avaliable
-	public static int TILE_IDS = 256;
+	//Static value representing the total number of PROP IDs avaliable
+	public static int PROP_IDS = 256;
 	
-	//Array representing the tileDefs which have been loaded.
-	private TileDef[] tiles;
-	private int currTile;
+	//Array representing the props which have been loaded.
+	private Prop[] props;
+	private int currProp;
 	
-	//The location where the image files are found for the tileDefs to use.
+	//The location where the image files are found
 	private String imgRes;
 	
 	//the saxParser being used to parse the loaded XML file
 	private SAXParser saxParser;
 	
 	//String representing the current text processed by the saxParser.
-	private String tempVal;
+	//private String tempVal;
 	
 	public PropDefs(String resXML, String imgRes) throws SlickException {
 		this.imgRes = imgRes;
@@ -47,42 +49,51 @@ public class PropDefs extends DefaultHandler {
 		}
 	}
 	
-	public TileDef getTileById(int id) {
+	public Prop getPropById(int id) {
 		if (id != 0)
-			return tiles[id-1];
+			return props[id-1];
+		
 		return null;
 	}
 	
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {		
 		if ("TILELIST".equalsIgnoreCase(qName)) {
 			try {				
-				tiles = new TileDef[Integer.parseInt(attributes.getValue("ids"))];
-				PropDefs.TILE_IDS = Integer.parseInt(attributes.getValue("ids"));
+				PropDefs.PROP_IDS = Integer.parseInt(attributes.getValue("ids"));
+				props = new Prop[PropDefs.PROP_IDS];
 			} catch (IllegalFormatException e) {
 				System.out.println("ERROR: Unable to allocate array of length: "+attributes.getValue("ids"));
 				return;
 			}
-		} else if (tiles == null) {
-			tiles = new TileDef[PropDefs.TILE_IDS];
-		}
-
-		/*if ("TILE".equalsIgnoreCase(qName)) {
-			int id = Integer.parseInt(attributes.getValue("id"));
-			currTile = id-1;
-			tiles[id-1] = new TileDef(id, imgRes);
+		} else if (props == null) {
+			props = new Prop[PropDefs.PROP_IDS];
 		}
 		
-		if ("TILEIMG".equalsIgnoreCase(qName)) {
-			tiles[currTile].setTileImg(attributes.getValue("src"));
+		if ("PROP".equalsIgnoreCase(qName)) {
+			int id = 0;
+			
+			try {
+				id = Integer.parseInt(attributes.getValue("id"));
+			} catch (NumberFormatException e) {
+				return;
+			}
+			boolean forceBlocked = Boolean.parseBoolean(attributes.getValue("forceBlocked"));
+			
+			currProp = id-1;
+			props[id-1] = new Prop(id, forceBlocked);
 		}
 		
-		if ("MAINVERT".equalsIgnoreCase(qName)) {
-			tiles[currTile].setMainVert(attributes.getValue("src"));
+		if ("IMG".equalsIgnoreCase(qName)) {
+			if (currProp < 0)
+				return;
+			
+			try {
+				props[currProp].setImg(AgenosImage.fromImageDef(attributes, imgRes));
+			} catch (SlickException e) {
+				props[currProp].ready = false;
+				return;
+			}
 		}
-		
-		if ("TOPVERT".equalsIgnoreCase(qName)) {
-			tiles[currTile].setTopVert(attributes.getValue("src"));
-		}*/
 		
 		/*if ("".equals (uri))
 		    System.out.println("Start element: " + qName);
@@ -91,16 +102,16 @@ public class PropDefs extends DefaultHandler {
 	}
 	
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		if ("BLOCKED".equalsIgnoreCase(qName)) {
+		/*if ("BLOCKED".equalsIgnoreCase(qName)) {
 			if ("TRUE".equalsIgnoreCase(tempVal)) {
-				tiles[currTile].setBlocked(true);
+				props[currProp].setBlocked(true);
 			} else {
-				tiles[currTile].setBlocked(false);
+				props[currProp].setBlocked(false);
 			}
-		}
+		}*/
 		
 		if ("TILE".equalsIgnoreCase(qName)) {
-			currTile = -1;
+			currProp = -1;
 		}
 		
 		/*if ("".equals (uri))
@@ -109,8 +120,8 @@ public class PropDefs extends DefaultHandler {
 		    System.out.println("End element: {" + uri + "}" + localName);*/
 	}
 	
-	public void characters (char ch [], int start, int length) throws SAXException {
+	/*public void characters (char ch [], int start, int length) throws SAXException {
 		tempVal = new String(ch,start,length);
-	}
+	}*/
 
 }

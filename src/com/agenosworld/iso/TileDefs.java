@@ -52,6 +52,7 @@ public class TileDefs extends DefaultHandler {
 	public TileDef getTileById(int id) {
 		if (id != 0)
 			return tiles[id-1];
+		
 		return null;
 	}
 	

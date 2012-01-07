@@ -1,0 +1,6 @@
+<props ids="256">
+	<prop id="1" forceBlocked="true">
+		<name>Tree</name>
+		<img src="prop_tree.png" xOffset="10" yOffset="40" animated="false"/>
+	</prop>
+</props>

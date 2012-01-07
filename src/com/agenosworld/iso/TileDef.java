@@ -80,9 +80,9 @@ public class TileDef {
 			int renderY = currY+(TileDef.TILE_HEIGHT/2-TileDef.VERTICAL_DELTA);
 			
 			if (i==(elevation - 1)) {
-				topVert.draw(x, renderY);
+				topVert.render(x, renderY);
 			} else {
-				mainVert.draw(x, renderY);
+				mainVert.render(x, renderY);
 			}
 			
 			currY -= TileDef.VERTICAL_DELTA;

@@ -3,8 +3,9 @@
  */
 package com.agenosworld.iso;
 
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import com.agenosworld.basicgame.AgenosImage;
+import com.agenosworld.basicgame.Updater;
 
 /**
  * @author Michael
@@ -12,56 +13,30 @@ import org.newdawn.slick.SlickException;
  */
 public class Prop {
 	
-	public static final int TILE_WIDTH = 40;
-	public static final int TILE_HEIGHT = 20;
-	
-	public static final int VERTICAL_DELTA = 5;
-	public static final int VERTICAL_HEIGHT = 14;
-	
 	public boolean ready = false;
 	
-	public Image tile;
-	public Image mainVert;
-	public Image topVert;
-	public boolean blocked;
+	public AgenosImage prop;
 	
 	//Current rendered Y position of the top of the tile
 	public int currY;
 	
-	private String imgSrc;
 	private int id;
+	private boolean forceBlocked;
 	
-	public Prop(int id, String imgSrc) {
-		this.imgSrc = imgSrc;
+	public Prop(int id, boolean forceBlocked) {
 		this.id = id;
+		this.forceBlocked = forceBlocked;
 	}
 	
-	public void setTileImg(String res) {
-		try {
-			tile = new Image(imgSrc+"/"+res);
-		} catch (SlickException e) {
-			System.out.println("ERROR: Unable to load image for tile ID: "+id);
-		}
-		checkRdy();
+	public boolean forceBlocked() {
+		return forceBlocked;
 	}
-	public void setMainVert(String res) {
-		try {	
-			mainVert = new Image(imgSrc+"/"+res);
-		} catch (SlickException e) {
-			System.out.println("ERROR: Unable to load image for tile ID: "+id);
-		}
-		checkRdy();
-	}
-	public void setTopVert(String res) {
-		try {	
-			topVert = new Image(imgSrc+"/"+res);
-		} catch (SlickException e) {
-			System.out.println("ERROR: Unable to load image for tile ID: "+id);
-		}
-		checkRdy();
-	}
-	public void setBlocked(boolean blocked) {
-		this.blocked = blocked;
+	
+	public void setImg(AgenosImage img) {
+		prop = img;
+		if (img.isAnimated())
+			Updater.addUpdatable(img);
+		this.ready = true;
 	}
 	
 	/**
@@ -73,34 +48,11 @@ public class Prop {
 	 * @throws SlickException Thrown if tile is not yet ready to be rendered
 	 */
 	
-	public void render(int x, int y, int elevation) throws SlickException {
-		if (!ready) {
-			//throw new SlickException("Tile not yet ready");
+	public void render(int x, int y) throws SlickException {
+		if (!ready)
 			return;
-		}
 		
-		currY = y;
-		
-		for (int i=0; i<elevation; i++) {
-			
-			int renderY = currY+(Prop.TILE_HEIGHT/2-Prop.VERTICAL_DELTA);
-			
-			if (i==(elevation - 1)) {
-				topVert.draw(x, renderY);
-			} else {
-				mainVert.draw(x, renderY);
-			}
-			
-			currY -= Prop.VERTICAL_DELTA;
-		}
-		
-		tile.draw(x, currY);
-	}
-	
-	private void checkRdy() {
-		if (tile!=null && topVert!=null && mainVert!=null) {
-			this.ready = true;
-		}
+		prop.render(x, y);
 	}
 
 }

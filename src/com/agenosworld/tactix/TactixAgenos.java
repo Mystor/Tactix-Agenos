@@ -39,6 +39,7 @@ public class TactixAgenos extends BasicGame implements GameBasics {
 		// TODO Auto-generated method stub
 		tileDefs = new TileDefs("res/tiles.xml", "res/sprites/tiles");
 		isoMap = new IsoMap(tileDefs, this);
+		Updater.addUpdatable(isoMap);
 
 		tileTargeter = new TileTargeter(isoMap, "res/sprites/hitmap-tile.png");
 		
@@ -55,8 +56,8 @@ public class TactixAgenos extends BasicGame implements GameBasics {
 			throws SlickException {
 		input.poll(this.getWidth(), this.getHeight());
 		
-		if (isoMap != null)
-			isoMap.update(delta);
+		/*if (isoMap != null)
+			isoMap.update(delta);*/
 		
 		Updater.update(delta);
 
