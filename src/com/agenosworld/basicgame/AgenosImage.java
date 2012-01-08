@@ -110,7 +110,7 @@ public class AgenosImage extends SpriteSheet implements Updatable {
 	
 	public void render(int x, int y) {
 		if (!animated) {
-			this.draw(x, y);
+			this.draw(x-xOffset, y-yOffset);
 			return;
 		}
 		

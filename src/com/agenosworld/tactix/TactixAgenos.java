@@ -21,6 +21,7 @@ public class TactixAgenos extends BasicGame implements GameBasics {
 	
 	IsoMap isoMap;
 	TileDefs tileDefs;
+	PropDefs propDefs;
 	Input input;
 	
 	TileTargeter tileTargeter;
@@ -38,7 +39,9 @@ public class TactixAgenos extends BasicGame implements GameBasics {
 	public void init(GameContainer container) throws SlickException {
 		// TODO Auto-generated method stub
 		tileDefs = new TileDefs("res/tiles.xml", "res/sprites/tiles");
-		isoMap = new IsoMap(tileDefs, this);
+		propDefs = new PropDefs("res/props.xml", "res/sprites/props");
+		isoMap = MapLoader.loadMap("res/maps/map1.xml", tileDefs, propDefs, this);
+		//isoMap = new IsoMap(tileDefs, this);
 		Updater.addUpdatable(isoMap);
 
 		tileTargeter = new TileTargeter(isoMap, "res/sprites/hitmap-tile.png");

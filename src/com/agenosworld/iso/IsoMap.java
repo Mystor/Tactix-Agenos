@@ -6,6 +6,8 @@ package com.agenosworld.iso;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.MouseListener;
+import org.newdawn.slick.geom.Vector2f;
+
 import com.agenosworld.basicgame.*;
 
 /**
@@ -13,6 +15,13 @@ import com.agenosworld.basicgame.*;
  *
  */
 public class IsoMap implements MouseListener, Updatable, Renderable {
+	
+	//Vector2fs which represent the directions where other tiles exist for tiles of an even Y origin.
+	public static final Vector2f DIR_UL = new Vector2f(-1, -1);
+	public static final Vector2f DIR_UR = new Vector2f(0, -1);
+	public static final Vector2f DIR_DL = new Vector2f(-1, 1);
+	public static final Vector2f DIR_DR = new Vector2f(0, 1);
+	//To determine value for a tile at origin Y, simply add y%2 to the X value of the vector.
 	
 	//Map Scrolling Variables
 	private int xScroll = 0;
@@ -84,7 +93,11 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	}
 	
 	public Tile getTileAt(int x, int y) {
-		return tilesArray[x][y]; 
+		try {
+			return tilesArray[x][y];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 	
 	public TileDefs getTileDefs() {
@@ -113,7 +126,7 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	public void render() throws SlickException {
 		for (int y=0; y<mapHeight; y++) {
 			for (int x=0; x<mapWidth; x++) {
-				tilesArray[x][y].render(xScroll, yScroll);
+				tilesArray[x][y].render(xScroll, yScroll, this);
 			}
 		}
 	}

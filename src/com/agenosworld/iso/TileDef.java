@@ -3,6 +3,8 @@
  */
 package com.agenosworld.iso;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import com.agenosworld.basicgame.AgenosImage;
@@ -67,7 +69,7 @@ public class TileDef {
 	 * @throws SlickException Thrown if tile is not yet ready to be rendered
 	 */
 	
-	public void render(int x, int y, int elevation) throws SlickException {
+	public void render(int x, int y, int elevation, ArrayList<Prop> props) throws SlickException {
 		if (!ready) {
 			//throw new SlickException("Tile not yet ready");
 			return;
@@ -89,6 +91,10 @@ public class TileDef {
 		}
 		
 		tile.render(x, currY);
+		
+		for (Prop p : props) {
+			p.render(x, currY);
+		}
 	}
 	
 	private void checkRdy() {
