@@ -72,6 +72,17 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 		}
 	}
 	
+	public IsoMap(Tile[][] tiles, int mapWidth, int mapHeight, GameBasics game) {
+		this.game = game;
+		this.mapWidth = mapWidth;
+		this.mapHeight = mapHeight;
+		
+		xScroll = Math.round(game.getWidth()-(mapWidth+0.5f)*TileDef.TILE_WIDTH)/2;
+		yScroll = Math.round(game.getHeight()-(mapHeight+1f)*TileDef.TILE_HEIGHT/2)/2;
+		
+		tilesArray = tiles;
+	}
+	
 	public Tile getTileAt(int x, int y) {
 		return tilesArray[x][y]; 
 	}
@@ -105,32 +116,6 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 				tilesArray[x][y].render(xScroll, yScroll);
 			}
 		}
-		/*int xOffset = 0;
-		
-		int renderX = 0;
-		int renderY = 0;
-		
-		int tileID = 0;
-		
-		for (int y=0; y<mapHeight; y++) {
-			if (y%2 == 0) {
-				xOffset = 0;
-			} else {
-				xOffset = tileWidth/2;
-			}
-			
-			for (int x=0; x<mapWidth; x++) {
-				renderX = xOffset + x*tileWidth;
-				renderY = y*tileHeight/2;
-				
-				tileID = tileIDArray[x+y*mapWidth];
-				
-				if (tileID != 0) {
-					tileDefs.getTileById(tileID).render(renderX+xScroll, renderY+yScroll, tileHeightArray[x+y*mapWidth]+2);
-				}
-				
-			}
-		}*/
 	}
 	
 	/* (non-Javadoc)
