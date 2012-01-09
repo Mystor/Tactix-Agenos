@@ -42,45 +42,11 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	//private int tileWidth = 40;
 	//private int tileHeight = 20;
 	
-	private int[] tileIDArray =
-		{1,1,1,2,2,1,1,
-		  2,1,1,1,1,1,1,
-		 2,2,1,0,1,1,1,
-		  2,1,1,1,1,0,0
-		};
-	
-	private int[] tileHeightArray = 
-		{1,1,1,3,2,0,0,
-		  0,1,2,2,0,0,0,
-		 0,0,1,0,1,0,0,
-		  0,1,1,1,1,0,0
-		};
-	
 	//Tile Definition Values
-	private TileDefs tileDefs;
 	
 	private Tile[][] tilesArray;
 	
 	//Create a new IsoMap
-	public IsoMap(TileDefs tileDefs, GameBasics game) throws SlickException {
-		
-		this.tileDefs = tileDefs;
-		this.game = game;
-		
-		xScroll = Math.round(game.getWidth()-(mapWidth+0.5f)*TileDef.TILE_WIDTH)/2;
-		yScroll = Math.round(game.getHeight()-(mapHeight+1f)*TileDef.TILE_HEIGHT/2)/2;
-		
-		tilesArray = new Tile[mapWidth][mapHeight];
-		
-		for (int y=0; y<mapHeight; y++) {
-			
-			for (int x=0; x<mapWidth; x++) {
-				tilesArray[x][y] = new Tile(x, y, tileHeightArray[x+y*mapWidth], tileDefs.getTileById(tileIDArray[x+y*mapWidth]));
-			}
-			
-		}
-	}
-	
 	public IsoMap(Tile[][] tiles, int mapWidth, int mapHeight, GameBasics game) {
 		this.game = game;
 		this.mapWidth = mapWidth;
@@ -98,10 +64,6 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return null;
 		}
-	}
-	
-	public TileDefs getTileDefs() {
-		return tileDefs;
 	}
 	
 	public int getXScroll() {
