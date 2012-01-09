@@ -14,9 +14,6 @@ public class Tile {
 	
 	public static final int BASE_ELEVATION = 2;
 	
-	//private boolean selected;
-	private boolean hover = false;
-	
 	//Tile Property variables
 	private int x, y;
 	private int elevation;
@@ -62,10 +59,6 @@ public class Tile {
 		return props.contains(prop);
 	}
 	
-	public void setHover(boolean hover) {
-		this.hover = hover;
-	}
-	
 	public boolean isBlocked() {
 		return blocked;
 	}
@@ -84,9 +77,6 @@ public class Tile {
 		
 		int xRender = 0;
 		int yRender = 0;
-		
-		/*xRender = TILE_WIDTH*x/2-TILE_WIDTH*y/2;
-		yRender = TILE_HEIGHT*y/2+TILE_HEIGHT*x/2;*/
 		
 		xRender = xOffset + x*TILE_WIDTH;
 		yRender = y*TILE_HEIGHT/2;

@@ -9,6 +9,7 @@ import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.agenosworld.basicgame.*;
+import com.agenosworld.iso.pathfinding.AreaSearcher;
 
 /**
  * @author Michael
@@ -38,9 +39,6 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	//Map Definition Variables
 	private int mapWidth = 7;
 	private int mapHeight = 4;
-	
-	//private int tileWidth = 40;
-	//private int tileHeight = 20;
 	
 	//Tile Definition Values
 	
@@ -98,7 +96,7 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	 */
 	@Override
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-		/*if (newx < SCROLL_BORDER) {
+		if (newx < SCROLL_BORDER) {
 			xRate = baseRate*(1.0f-((float)newx/SCROLL_BORDER));
 			//xRate = baseRate-(baseRate/(SCROLL_BORDERf-newx));
 		} else if (newx > game.getWidth()-SCROLL_BORDER) {
@@ -116,7 +114,7 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 			//yRate = -(baseRate-(baseRate/(SCROLL_BORDERf-game.getHeight()+newy)));
 		} else {
 			yRate = 0;
-		}*/
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -138,6 +136,30 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 		} else if (yScroll < -mapHeight*TileDef.TILE_HEIGHT+300) {
 			yScroll = -mapHeight*TileDef.TILE_HEIGHT+300;
 		}
+	}
+	
+	/**
+	 * @param areaSearcher
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean blocked(AreaSearcher areaSearcher, int x, int y) {
+		try {
+			return tilesArray[x][y].isBlocked();
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return true;
+		}
+	}
+	
+	/**
+	 * @param areaSearcher
+	 * @param tx
+	 * @param ty
+	 * @return
+	 */
+	public float getCost(AreaSearcher areaSearcher, int tx, int ty) {
+		return 1;
 	}
 
 	/* (non-Javadoc)
