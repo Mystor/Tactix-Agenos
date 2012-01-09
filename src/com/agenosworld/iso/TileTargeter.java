@@ -19,6 +19,9 @@ public class TileTargeter implements MouseListener {
 	private IsoMap map;
 	private Image mask;
 	
+	//The currently selected tile
+	private Tile current;
+	
 	//Defines whether the TileTargeter responds to MouseMoved events.
 	private boolean active = true;
 	
@@ -91,13 +94,25 @@ public class TileTargeter implements MouseListener {
 			
 			if (tileRelY >= 0 && tileRelY <= TileDef.TILE_HEIGHT) {
 				if (mask.getColor(tileRelX, tileRelY).a == 1) {
-					System.out.println("Selected tile:" + actX + "x" + y);
+					if (current != map.getTileAt(actX, y)) {
+						try {
+							current.remProp(SelectionIndicator.getIndicator());
+						} catch (Exception e) {}
+						current = map.getTileAt(actX, y);
+						try {
+							current.addProp(SelectionIndicator.getIndicator());
+						} catch (Exception e) {}
+					}
+					//System.out.println("Selected tile:" + actX + "x" + y);
 					return;
 				}
 			}
 		}
 		
-		
+		try {
+			current.remProp(SelectionIndicator.getIndicator());
+			current = null;
+		} catch (Exception e) {}
 		
 	}
 	

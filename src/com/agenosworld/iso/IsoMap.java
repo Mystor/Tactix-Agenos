@@ -25,11 +25,14 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	//To determine value for a tile at origin Y, simply add y%2 to the X value of the vector.
 	
 	//Map Scrolling Variables
-	private int xScroll = 0;
-	private int yScroll = 0;
+	private float xScroll = 0;
+	private float yScroll = 0;
 	
-	private float baseRate = 0.2f;
-	private float yRate = 0, xRate = 0;
+	private float xRate;
+	private float yRate;
+	
+	private float baseRate = 0.1f;
+	//private float yRate = 0, xRate = 0;
 	
 	private final int SCROLL_BORDER = 60;
 	
@@ -43,6 +46,7 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	//Tile Definition Values
 	
 	private Tile[][] tilesArray;
+
 	
 	//Create a new IsoMap
 	public IsoMap(Tile[][] tiles, int mapWidth, int mapHeight, GameBasics game) {
@@ -65,10 +69,10 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	}
 	
 	public int getXScroll() {
-		return xScroll;
+		return Math.round(xScroll);
 	}
 	public int getYScroll() {
-		return yScroll;
+		return Math.round(yScroll);
 	}
 	
 	public int getWidth() {
@@ -86,7 +90,7 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	public void render() throws SlickException {
 		for (int y=0; y<mapHeight; y++) {
 			for (int x=0; x<mapWidth; x++) {
-				tilesArray[x][y].render(xScroll, yScroll, this);
+				tilesArray[x][y].render(Math.round(xScroll), Math.round(yScroll), this);
 			}
 		}
 	}
@@ -96,7 +100,27 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	 */
 	@Override
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-		if (newx < SCROLL_BORDER) {
+		if (newx > game.getWidth()-SCROLL_BORDER) {
+			//SCROLL RIGHT AT VARIABLE RATE
+			xRate = -(float)(newx-game.getWidth()+SCROLL_BORDER)/SCROLL_BORDER;
+		} else if (newx < SCROLL_BORDER) {
+			//SCROLL LEFT AT VARIABLE RATE
+			xRate = (1.0f-((float)newx/SCROLL_BORDER));
+		} else {
+			xRate = 0;
+		}
+		
+		if (newy > game.getHeight()-SCROLL_BORDER) {
+			//SCROLL DOWN AT VARIABLE RATE
+			yRate = -(float)(newy-game.getHeight()+SCROLL_BORDER)/SCROLL_BORDER;
+		} else if (newy < SCROLL_BORDER) {
+			//SCROLL UP AT VARIABLE RATE
+			yRate = (1-((float)newy/SCROLL_BORDER));
+		} else {
+			yRate = 0;
+		}
+		
+		/*if (newx < SCROLL_BORDER) {
 			xRate = baseRate*(1.0f-((float)newx/SCROLL_BORDER));
 			//xRate = baseRate-(baseRate/(SCROLL_BORDERf-newx));
 		} else if (newx > game.getWidth()-SCROLL_BORDER) {
@@ -114,7 +138,7 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 			//yRate = -(baseRate-(baseRate/(SCROLL_BORDERf-game.getHeight()+newy)));
 		} else {
 			yRate = 0;
-		}
+		}*/
 	}
 	
 	/* (non-Javadoc)
@@ -122,8 +146,8 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 	 */
 	@Override
 	public void update(int delta) {
-		this.xScroll += xRate*delta;
-		this.yScroll += yRate*delta;
+		this.xScroll += xRate*baseRate*delta;
+		this.yScroll += yRate*baseRate*delta;
 		
 		if (xScroll > game.getWidth()-300) {
 			xScroll = game.getWidth()-300;
@@ -133,8 +157,8 @@ public class IsoMap implements MouseListener, Updatable, Renderable {
 		
 		if (yScroll > game.getHeight()-300) {
 			yScroll = game.getHeight()-300;
-		} else if (yScroll < -mapHeight*TileDef.TILE_HEIGHT+300) {
-			yScroll = -mapHeight*TileDef.TILE_HEIGHT+300;
+		} else if (yScroll < -mapHeight*(TileDef.TILE_HEIGHT/2)+300) {
+			yScroll = -mapHeight*(TileDef.TILE_HEIGHT/2)+300;
 		}
 	}
 	

@@ -83,8 +83,9 @@ public class TactixAgenos extends BasicGame implements GameBasics {
 	 */
 	public static void main(String[] args) {
 		try {
-			AppGameContainer app = new AppGameContainer(new TactixAgenos());
-			app.setDisplayMode(800, 600, false);
+			TactixAgenos game = new TactixAgenos();
+			AppGameContainer app = new AppGameContainer(game);
+			app.setDisplayMode(game.getWidth(), game.getHeight(), false);
 			//app.setShowFPS(false);
 			app.start();
 		} catch (SlickException e) {

@@ -35,8 +35,13 @@ public class Tile {
 		
 		props = new ArrayList<Prop>();
 		
-		if (tileDef != null)
+		if (tileDef == null) {
+			this.elevation = -BASE_ELEVATION;
+		} else {
 			this.blocked = tileDef.blocked;
+		}
+		
+		
 		this.tileDef = tileDef;
 		
 		if (y%2 == 0) {
@@ -100,6 +105,9 @@ public class Tile {
 		
 		if (minElevation == Integer.MAX_VALUE)
 			minElevation = 0;
+		
+		if (minElevation > elevation+BASE_ELEVATION)
+			minElevation = elevation+BASE_ELEVATION; 
 		
 		int elevationDelta = TileDef.VERTICAL_DELTA*minElevation;
 		
